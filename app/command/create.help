@@ -1,0 +1,8 @@
+COMMAND  - The full name of the command you wish to create.
+           Example: new command
+
+This will create the files required to fully describe a command
+to Bash CLI, specifically the <command>, <command>.usage and
+<command>.help files. The correct directory structure to host
+the command will be created, and .help files will be created
+at each directory level.

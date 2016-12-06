@@ -1,0 +1,5 @@
+COMMAND  - The full name of the command you wish to remove.
+
+This will remove the specified command and all its related
+files. It will clobber directories if you provide one instead
+of a specific command, so be careful!

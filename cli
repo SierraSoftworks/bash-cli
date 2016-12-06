@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+ROOT_DIR=`dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' $0)"`
+CLI_ENTRYPOINT=`basename $0`
+
+. "$ROOT_DIR/utils"
+
+# Locate the correct command to execute by looking through the app directory
+# for folders and files which match the arguments provided on the command line.
+CMD_FILE="$ROOT_DIR/app/"
+CMD_ARG_START=1
+while [[ -d "$CMD_FILE" && $CMD_ARG_START -le $# ]]; do
+
+    # If the user provides help as the last argument on a directory, then
+    # show them the help for that directory rather than continuing
+    if [[ "${!CMD_ARG_START}" == "help" ]]; then
+        "$ROOT_DIR/help" $0 ${@:1:$(($CMD_ARG_START-1))}
+        exit 3
+    fi
+
+    CMD_FILE="$CMD_FILE/${!CMD_ARG_START}"
+    CMD_ARG_START=$(($CMD_ARG_START+1))
+done
+
+# If we hit a directory by the time we run out of arguments, then our user
+# hasn't completed their command, so we'll show them the help for that directory
+# to help them along.
+if [ -d "$CMD_FILE" ]; then
+    "$ROOT_DIR/help" $0 $@
+    exit 3
+fi
+
+# If we didn't couldn't find the exact command the user entered then warn them
+# about it, and try to be helpful by displaying help for that directory.
+if [[ ! -f "$CMD_FILE" ]]; then
+    "$ROOT_DIR/help" $0 ${@:1:$(($CMD_ARG_START-1))}
+    >&2 echo -e "\e[31mWe could not find the command \e[36m$CLI_ENTRYPOINT ${@:1:$CMD_ARG_START}\e[39m"
+    >&2 echo -e "To help out, we've shown you the help docs for \e[36m$CLI_ENTRYPOINT ${@:1:$(($CMD_ARG_START-1))}\e[39m"
+    exit 3
+fi
+
+# Run the command and capture its exit code for introspection
+"$CMD_FILE" ${@:$CMD_ARG_START}
+EXIT_CODE=$?
+
+# If the command exited with an exit code of 3 (our "show help" code)
+# then show the help documentation for the command.
+if [[ $EXIT_CODE == 3 ]]; then
+    "$ROOT_DIR/help" $0 $@
+fi
+
+# Exit with the same code as the command
+exit $EXIT_CODE

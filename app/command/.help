@@ -1,0 +1,4 @@
+Tools to manage commands in a Bash CLI project.
+
+This includes things like creating new commands, removing existing
+commands and opening their various files for editing.

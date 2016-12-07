@@ -10,7 +10,7 @@ if [[ -d "$APP_DIR/app" && -f "$APP_DIR/app/.bash_cli" ]]; then
 fi
 
 if [[ ! -f "$APP_DIR/.bash_cli" ]]; then
-    >&2 echo -e "\e[31mYou are not within a Bash CLI project\e[39m"
+    >&2 echo -e "\033[31mYou are not within a Bash CLI project\033[39m"
     >&2 echo "Please change your directory to a valid project or run the init command to set one up."
     exit 1
 fi
@@ -35,8 +35,8 @@ if [[ -f "$CMD_DIR/$CMD_NAME" ]]; then
 elif [[ -d "$CMD_DIR/$CMD_NAME" ]]; then
     rm -Rf "$CMD_DIR/$CMD_NAME"
 else
-    echo -e "\e[31mCommand \e[36m$@\e[31m did not exist\e[39m"
+    echo -e "\033[31mCommand \033[36m$@\033[31m did not exist\033[39m"
     exit 1
 fi
 
-echo -e "\e[32mCommand \e[36m$@\e[32m successfully removed\e[39m"
+echo -e "\033[32mCommand \033[36m$@\033[32m successfully removed\033[39m"

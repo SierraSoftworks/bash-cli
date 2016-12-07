@@ -34,8 +34,8 @@ fi
 # about it, and try to be helpful by displaying help for that directory.
 if [[ ! -f "$CMD_FILE" ]]; then
     "$ROOT_DIR/help" $0 ${@:1:$(($CMD_ARG_START-1))}
-    >&2 echo -e "\e[31mWe could not find the command \e[36m$CLI_ENTRYPOINT ${@:1:$CMD_ARG_START}\e[39m"
-    >&2 echo -e "To help out, we've shown you the help docs for \e[36m$CLI_ENTRYPOINT ${@:1:$(($CMD_ARG_START-1))}\e[39m"
+    >&2 echo -e "\033[31mWe could not find the command \033[36m$CLI_ENTRYPOINT ${@:1:$CMD_ARG_START}\033[39m"
+    >&2 echo -e "To help out, we've shown you the help docs for \033[36m$CLI_ENTRYPOINT ${@:1:$(($CMD_ARG_START-1))}\033[39m"
     exit 3
 fi
 

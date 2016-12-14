@@ -53,6 +53,15 @@ provide a bit of additional context around how it works, when you should use it 
 In addition to providing help for commands, you may also provide it for directories to explain what
 their sub-commands are intended to achieve. To do this, simply add a `.help` file to the directory.
 
+## Autocomplete
+Autocomplete functionality has been added to make navigating the command line even easier than it
+was before. To install it, simply add the following to `/etc/bash_completion.d/my-app`.
+
+```sh
+source "/opt/my-app/complete"
+complete -F _bash_cli my-app
+```
+
 ## Frequently Asked Questions
 
 1. **Can I use Bash CLI to run things which aren't bash scripts?**
@@ -62,3 +71,7 @@ their sub-commands are intended to achieve. To do this, simply add a `.help` fil
 1. **Will Bash CLI work on my Mac?**
    It should, we've built everything to keep it as portable as possible, so if you do have a problem
    don't hesitate to open a bug report.
+
+1. **Does it allow me to use tab-autocomplete?**
+   As of the latest version, yes it does. The install command included in this repo will automatically
+   set up your `/etc/bash_completion.d/` directory to provide support for your project. 

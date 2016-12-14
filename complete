@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+
+function _bash_cli() {
+    local root_dir;
+    root_dir=`dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$(which ${COMP_WORDS[0]})")"`
+
+    local curr_arg;
+    curr_arg="${COMP_WORDS[COMP_CWORD]}"
+
+    # Locate the correct command to execute by looking through the app directory
+    # for folders and files which match the arguments provided on the command line.
+    local cmd_file="$root_dir/app/"
+    local cmd_arg_start=1
+    while [[ -d "$cmd_file" && $cmd_arg_start -le $COMP_CWORD ]]; do
+
+        # Handle the help virtual command by "ignoring" it
+        if [[ "${COMP_WORDS[cmd_arg_start]}" == "help" ]]; then
+            cmd_arg_start=$(($cmd_arg_start+1))
+            continue
+        fi
+
+        cmd_file="$cmd_file/${COMP_WORDS[cmd_arg_start]}"
+        cmd_arg_start=$(($cmd_arg_start+1))
+    done
+
+    # If we've found something which doesn't exist, then let's
+    # look at its containing directory for info.
+    if [[ ! -e "$cmd_file" ]]; then
+        cmd_file=`dirname $cmd_file`
+    fi
+
+    # If we found a command, then suggest the `--help` argument
+    # TODO: Add parsing of .usage files for this
+    if [[ -f "$cmd_file" ]]; then
+        # Check if we've already got a `--help`, don't output anything
+        # if we do.
+        for i in `seq $cmd_arg_start $COMP_CWORD`; do
+            if [[ "${COMP_WORDS[$i]}" == "--help" ]]; then
+                COMPREPLY=()
+                return
+            fi
+        done
+
+        COMPREPLY=(`compgen -W '--help' -- "$curr_arg"`)
+    # If we found a directory, then show all the commands which are
+    # available within it, as well as the `help` virtual command.
+    elif [ -d "$cmd_file" ]; then
+        local opts=("help")
+        while IFS= read -d $'\0' -r file ; do
+            opts=("${opts[@]}" `basename $file`)
+        done < <(find $cmd_file/ -maxdepth 1 ! -path $cmd_file/ ! -iname '*.*' -print0)
+        
+        IFS="
+        "
+        COMPREPLY=(`compgen -W "$(printf '%s\n' "${opts[@]}")" -- "$curr_arg"`)
+    fi
+}

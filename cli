@@ -65,7 +65,7 @@ for arg in "${CMD_ARGS[@]}"; do
 done
 
 # Run the command and capture its exit code for introspection
-"$CMD_FILE" ${CMD_ARGS}
+"$CMD_FILE" ${CMD_ARGS[@]}
 EXIT_CODE=$?
 
 # If the command exited with an exit code of 3 (our "show help" code)

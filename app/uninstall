@@ -18,6 +18,15 @@ fi
 
 NAME="$1"
 FOLDER="${2-"/usr/bin"}"
+BASH_COMPLETION="/etc/bash_completion.d/"
+if [ "$(uname)" == "Darwin" ]; then
+    if [ -d "$(brew --prefix)/etc/bash_completion.d" ]; then
+        BASH_COMPLETION="$(brew --prefix)$BASH_COMPLETION"
+    fi
+    if [ "$FOLDER" == "/usr/bin" ]; then
+      FOLDER="/usr/local/bin"
+    fi
+fi
 
 if [[ ! -f "$FOLDER/$NAME" ]]; then
     >&2 echo -e "\033[31mCommand \033[36m$1\033[31m did not exist in \033[36m$2\033[39m"
@@ -34,3 +43,4 @@ if [[ "$LN_PATH" != "$APP_DIR/cli" ]]; then
 fi
 
 rm "$FOLDER/$NAME"
+rm "$BASH_COMPLETION/$NAME"

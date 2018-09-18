@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+RC_PATH="$HOME/.$(cat "$ROOT_DIR"/app/.name)rc.json"
+
+if [[ -f "$RC_PATH" ]]; then
+    >&2 echo -e "\033[31m'$RC_PATH' already exists\033[39m"
+    >&2 echo "We'd rather not overwrite runtime configuration file you've already created."
+    exit 1
+fi
+
+cat > "$RC_PATH" <<EOF
+{
+    "key": "value"
+}
+EOF
+
+echo "You can now edit your runtime configuration file: $RC_PATH"

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+vi "$HOME/.$(cat "$ROOT_DIR"/app/.name)rc.json"

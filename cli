@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-ROOT_DIR=`dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' $0)"`
-CLI_ENTRYPOINT=`basename $0`
+ROOT_DIR=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' $0)")
+CLI_ENTRYPOINT=$(basename $0)
+
+export ROOT_DIR
 
 . "$ROOT_DIR/utils"
 
@@ -19,12 +21,12 @@ while [[ -d "$CMD_FILE" && $CMD_ARG_START -le $# ]]; do
         unset "ARGS[$((CMD_ARG_START-1))]"
         ARGS=("${ARGS[@]}")
 
-        "$ROOT_DIR/help" $0 ${ARGS[@]}
+        "$ROOT_DIR/help" "$0" "${ARGS[@]}"
         exit 3
     fi
 
     CMD_FILE="$CMD_FILE/${!CMD_ARG_START}"
-    CMD_ARG_START=$(($CMD_ARG_START+1))
+    CMD_ARG_START=$((CMD_ARG_START+1))
 done
 
 # Place the arguments for the command in their own list
@@ -35,14 +37,14 @@ CMD_ARGS=("${@:CMD_ARG_START}")
 # hasn't completed their command, so we'll show them the help for that directory
 # to help them along.
 if [ -d "$CMD_FILE" ]; then
-    "$ROOT_DIR/help" $0 $@
+    "$ROOT_DIR/help" "$0" "$@"
     exit 3
 fi
 
 # If we didn't couldn't find the exact command the user entered then warn them
 # about it, and try to be helpful by displaying help for that directory.
 if [[ ! -f "$CMD_FILE" ]]; then
-    "$ROOT_DIR/help" $0 ${@:1:$(($CMD_ARG_START-1))}
+    "$ROOT_DIR/help" "$0" "${@:1:$((CMD_ARG_START-1))}"
     >&2 echo -e "\033[31mWe could not find the command \033[36m$CLI_ENTRYPOINT ${@:1:$CMD_ARG_START}\033[39m"
     >&2 echo -e "To help out, we've shown you the help docs for \033[36m$CLI_ENTRYPOINT ${@:1:$(($CMD_ARG_START-1))}\033[39m"
     exit 3
@@ -58,20 +60,20 @@ for arg in "${CMD_ARGS[@]}"; do
         CMD_ARGS=("${CMD_ARGS[@]}")
 
         # Pass the result to the help script for interrogation
-        "$ROOT_DIR/help" $0 ${@:1:$((CMD_ARG_START - 1))} ${CMD_ARGS[@]}
+        "$ROOT_DIR/help" "$0" "${@:1:$((CMD_ARG_START - 1))}" "${CMD_ARGS[@]}"
         exit 3
     fi
     arg_i=$((arg_i+1))
 done
 
 # Run the command and capture its exit code for introspection
-"$CMD_FILE" ${CMD_ARGS[@]}
+"$CMD_FILE" "${CMD_ARGS[@]}"
 EXIT_CODE=$?
 
 # If the command exited with an exit code of 3 (our "show help" code)
 # then show the help documentation for the command.
 if [[ $EXIT_CODE == 3 ]]; then
-    "$ROOT_DIR/help" $0 $@
+    "$ROOT_DIR/help" "$0" "$@"
 fi
 
 # Exit with the same code as the command

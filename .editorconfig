@@ -1,5 +1,18 @@
+# unifying the coding style for different editors and IDEs => editorconfig.org
+
+; indicate this is the root of the project
 root = true
 
+###########################################################
+; common
+###########################################################
+
 [*]
-end_of_line = lf
+charset = utf-8
+
+end_of_line = LF
 insert_final_newline = true
+trim_trailing_whitespace = true
+
+indent_style = space
+indent_size = 4

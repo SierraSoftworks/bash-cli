@@ -59,7 +59,7 @@ $ michel
 $ michel rc init
 ----
 +
-It will contains configuration like api key, credentials, and so on.
+It will contains configuration in order for the commands to work properly.
 
 == Uninstall michel
 
@@ -104,11 +104,8 @@ The new command is directly usable and you can start to develop your new functio
 
 === Based on
 
-https://sierrasoftworks.com/2016/12/14/bash-cli-autocompletion/
-
-and the associated repository
-
-https://github.com/SierraSoftworks/bash-cli
+https://sierrasoftworks.com/2016/12/14/bash-cli-autocompletion/ 
+and the associated repository https://github.com/SierraSoftworks/bash-cli
 
 === Why `michel` ?
 

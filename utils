@@ -30,3 +30,7 @@ function info()    { echo -e "${COLOR_GREEN}[INFO]    ${COLOR_NORMAL}$*" | tee -
 function warning() { echo -e "${COLOR_YELLOW}[WARNING] ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
 function error()   { echo -e "${COLOR_MAGENTA}[ERROR]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
 function fatal()   { echo -e "${COLOR_RED}[FATAL]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
+
+function cli_call() {
+    "$ROOT_DIR/cli" "$@"
+}

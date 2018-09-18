@@ -37,14 +37,55 @@ fi
 
 cat > "$CMD_DIR/$CMD_NAME" <<EOT
 #!/usr/bin/env bash
-echo -e "\033[36mTODO\033[39m: Implement this command"
+set -euo pipefail
+IFS=$'\n\t'
+
+# Load utility methods
+. "\$ROOT_DIR/utils"
+
+cleanup() {
+    # Remove temporary files
+    # Restart services
+    # ...
+
+    info "$CMD_NAME - cleanup done"
+}
+
+if [[ "\${BASH_SOURCE[0]}" = "\$0" ]]; then
+    trap cleanup EXIT
+
+    # TODO remove this test if the command is without parameters
+    if [ \$# == 0 ]; then
+        exit 3
+    fi
+
+    # TODO: Script goes here
+    # ...
+
+    # Some logging capabilites
+    # info "log some information"
+    # warning "print a warning"
+    # error "log an error"
+    # fatal "log information before to exit in error"
+
+    # Read some value from the runtime configuration file (JSON format)
+    # cli_call rc read '.key'
+fi
 EOT
 
-echo "ARGS..." > "$CMD_DIR/$CMD_NAME.usage"
-cat > "$CMD_DIR/$CMD_NAME.help" <<EOT
-ARGS  - The arguments you wish to provide to this command
+chmod u+x "$CMD_DIR/$CMD_NAME"
 
+cat > "$CMD_DIR/$CMD_NAME.usage" <<EOT
+arguments...
+
+EOT
+
+cat > "$CMD_DIR/$CMD_NAME.help" <<EOT
 TODO: Fill out the help information for this command.
+
+Arguments:
+    arguments    the arguments you wish to provide to this command.
+
 EOT
 
 echo -e '\033[32mCommand \033[36m'"$*"'\033[32m created successfully\033[39m'

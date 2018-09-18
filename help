@@ -13,7 +13,7 @@ fi
 
 # Locate the correct level to display the helpfile for, either a directory
 # with no further arguments, or a command file.
-HELP_FILE="$ROOT_DIR/app/"
+HELP_FILE="$ROOT_DIR/app"
 HELP_ARG_START=2
 while [[ -d "$HELP_FILE" && $HELP_ARG_START -le $# ]]; do
     HELP_FILE="$HELP_FILE/${!HELP_ARG_START}"
@@ -24,7 +24,7 @@ done
 # commands in that directory along with its help content.
 if [[ -d "$HELP_FILE" ]]; then
     echo -e "${COLOR_GREEN}$CLI_ENTRYPOINT ${COLOR_CYAN}${@:2:$(($HELP_ARG_START-1))} ${COLOR_NORMAL}"
-    
+
     # If there's a help file available for this directory, then show it.
     if [[ -f "$HELP_FILE/.help" ]]; then
         cat "$HELP_FILE/.help"

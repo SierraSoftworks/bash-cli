@@ -24,3 +24,9 @@ function bcli_show_header() {
     echo -e "${COLOR_CYAN}Version  ${COLOR_NORMAL}$(bcli_trim_whitespace "$(cat "$1/.version")")"
     echo -e "${COLOR_CYAN}Author   ${COLOR_NORMAL}$(bcli_trim_whitespace "$(cat "$1/.author")")"
 }
+
+readonly LOG_FILE="/tmp/$(basename "$0").log"
+function info()    { echo -e "${COLOR_GREEN}[INFO]    ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
+function warning() { echo -e "${COLOR_YELLOW}[WARNING] ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
+function error()   { echo -e "${COLOR_MAGENTA}[ERROR]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
+function fatal()   { echo -e "${COLOR_RED}[FATAL]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }

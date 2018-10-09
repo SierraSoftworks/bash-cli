@@ -30,6 +30,12 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 ln -snf "$APP_DIR/cli" "$FOLDER/$NAME"
+if [[ $? == 0 ]]; then
+    info "Succesfully installed repos in your folder $FOLDER"
+else
+    error "Failed to install repos in folder $FOLDER"
+    exit 1
+fi
 
 cat > "$BASH_COMPLETION/$NAME" <<EOC
 source "$APP_DIR/complete"

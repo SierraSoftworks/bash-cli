@@ -31,6 +31,15 @@ function warning() { echo -e "${COLOR_YELLOW}[WARNING] ${COLOR_NORMAL}$*" | tee 
 function error()   { echo -e "${COLOR_MAGENTA}[ERROR]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; }
 function fatal()   { echo -e "${COLOR_RED}[FATAL]   ${COLOR_NORMAL}$*" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
+function checkusage() {
+  parametersmax=$(cat "$1".usage | wc -w | xargs)
+  parametersmin=$(cat "$1".usage | sed 's/\[.*//' | wc -w | xargs)
+
+  if [ ! "$parametersmin" -le "$2" -a "$2" -le "$parametersmax" ]; then
+    exit 3
+  fi
+}
+
 function cli_call() {
     "$ROOT_DIR/cli" "$@"
 }

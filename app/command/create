@@ -54,13 +54,10 @@ cleanup() {
 if [[ "\${BASH_SOURCE[0]}" = "\$0" ]]; then
     trap cleanup EXIT
 
-    # TODO remove this test if the command is without parameters
-    if [ \$# == 0 ]; then
-        exit 3
-    fi
+    checkusage "\$0" "\$#"
 
-    # TODO: Script goes here
-    # ...
+    arg1="\$1"
+    arg2="\${2:-}"
 
     # Some logging capabilites
     # info "log some information"
@@ -76,16 +73,15 @@ EOT
 chmod u+x "$CMD_DIR/$CMD_NAME"
 
 cat > "$CMD_DIR/$CMD_NAME.usage" <<EOT
-arguments...
-
+arg1 [arg2]
 EOT
 
 cat > "$CMD_DIR/$CMD_NAME.help" <<EOT
-TODO: Fill out the help information for this command.
+Fill out the help information for this command.
 
 Arguments:
-    arguments    the arguments you wish to provide to this command.
-
+    arg1    Some argument
+    arg2    (optional) Some optional argument
 EOT
 
 echo -e '\033[32mCommand \033[36m'"$*"'\033[32m created successfully\033[39m'

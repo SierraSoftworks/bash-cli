@@ -18,9 +18,26 @@ fi
 
 NAME="$1"
 FOLDER="${2-"/usr/bin"}"
+BASH_COMPLETION="/etc/bash_completion.d/"
 
-ln -s "$APP_DIR/cli" "$FOLDER/$NAME"
-cat > "/etc/bash_completion.d/$NAME" <<EOC
+if [ "$(uname)" == "Darwin" ]; then
+    if [ -d "$(brew --prefix)/etc/bash_completion.d" ]; then
+        BASH_COMPLETION="$(brew --prefix)$BASH_COMPLETION"
+    fi
+    if [ "$FOLDER" == "/usr/bin" ]; then
+      FOLDER="/usr/local/bin"
+    fi
+fi
+
+ln -snf "$APP_DIR/cli" "$FOLDER/$NAME"
+if [[ $? == 0 ]]; then
+    info "Succesfully installed repos in your folder $FOLDER"
+else
+    error "Failed to install repos in folder $FOLDER"
+    exit 1
+fi
+
+cat > "$BASH_COMPLETION/$NAME" <<EOC
 source "$APP_DIR/complete"
 complete -F _bash_cli $NAME
 EOC

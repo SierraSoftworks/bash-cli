@@ -1,9 +1,1 @@
-This is a demonstration application which makes use of Bash CLI
-to present its interface.
-
-You can place any scripts here and Bash CLI will automatically make
-them available, you can also add <command>.help files to provide contextual
-help information for individual commands.
-
-Directories allow you to create tree based command hierarchies and you
-can add a .help file to each directory to describe what that tree does.
+Provides commands

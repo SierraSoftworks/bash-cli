@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# Load utility methods
+. "$ROOT_DIR/utils"
+
+if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
+    gitstatus=$(git -C "$ROOT_DIR" rev-parse --is-inside-work-tree)
+    if [ "$gitstatus" == "true" ]; then
+        info "start to update this program"
+        git -C "$ROOT_DIR" pull -q origin "$(git symbolic-ref --short HEAD)"
+        info "this program is updated"
+    else
+        fatal "this program can't be updated, the folder is not a git repository"
+    fi
+fi

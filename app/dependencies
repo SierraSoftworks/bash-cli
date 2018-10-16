@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+info "jq: to manipulate json data - https://stedolan.github.io/jq/ (only if you use 'rc' commands)"

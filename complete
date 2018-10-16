@@ -31,7 +31,6 @@ function _bash_cli() {
     fi
 
     # If we found a command, then suggest the `--help` argument
-    # TODO: Add parsing of .usage files for this
     if [[ -f "$cmd_file" ]]; then
         # Check if we've already got a `--help`, don't output anything
         # if we do.
@@ -50,7 +49,7 @@ function _bash_cli() {
         while IFS= read -d $'\0' -r file ; do
             opts=("${opts[@]}" `basename $file`)
         done < <(find $cmd_file/ -maxdepth 1 ! -path $cmd_file/ ! -iname '*.*' -print0)
-        
+
         IFS="
         "
         COMPREPLY=(`compgen -W "$(printf '%s\n' "${opts[@]}")" -- "$curr_arg"`)

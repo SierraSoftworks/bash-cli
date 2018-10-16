@@ -1,0 +1,113 @@
+= michel
+
+Client for my shell scripts ( miʃɛl )
+
+With **michel**, you can start to develop your own bash cli.
+
+This client is compose of sub commands to work.
+To discover its possibilites, just start with `./cli` in your terminal.
+
+== Usage
+
+After <<Installation,**michel** installation>>, you can use it in your terminal:
+
+[source,shell]
+----
+$ michel
+----
+
+== Installation
+
+**michel** comes with `install` command
+
+. Download the project on your local machine in a folder of your choice
++
+[source,shell]
+----
+$ git clone git@github.com:rlespinasse/michel
+----
+
+. Install **michel** in your PATH
++
+[source,shell]
+----
+$ cd michel
+$ ./cli install michel <1>
+----
++
+<1> You can choose to call it what ever you want.
+
+. Get **michel** dependencies to install before using it
++
+[source,shell]
+----
+$ ./cli dependencies
+----
+
+. Reload your PATH and use **michel** to discover its capabilities
++
+[source,shell]
+----
+<reload terminal>
+$ michel
+----
+
+. You also need to initialize the runtime configuration file named `~/.michelrc.json`
++
+[source,shell]
+----
+$ michel rc init
+----
++
+It will contains configuration in order for the commands to work properly.
+
+== Uninstall michel
+
+**michel** comes also with `uninstall` command
+
+. Install **michel** in your PATH
++
+[source,shell]
+----
+$ cd michel
+$ ./cli uninstall michel <1>
+----
+<1> Or the name, you have given to **michel**
+
+== Tweak michel
+
+**michel** follow the `bash-cli` structure in order to work.
+It's based on a tree structure starting by the main folder `app` and the following files:
+
+* `command` file contains the script to execute
+* `command.help` file contains the help message to print
+* `command.usage` file contains the arguments usage (in one line)
+
+In your **development** michel folder, you can run **michel** with the internal cli `./cli command`.
+
+If you need to use a command in the tree, call `./cli` with each folder to access your command:
+
+* **command1** in `folder1` can be call with `./cli folder1 command1`
+* **command2** in `folder2/folder2.1` can be call with `./cli folder2 folder2.1 command2`
+
+=== Command manipulation
+
+If you want to:
+
+* add a new command, you need to run `./cli command create <command>`
++
+The new command is directly usable and you can start to develop your new functionality.
+
+* remove a command, you need to run `./cli command rm <command>`
+
+== Misc
+
+=== Based on
+
+https://sierrasoftworks.com/2016/12/14/bash-cli-autocompletion/ 
+and the associated repository https://github.com/SierraSoftworks/bash-cli
+
+=== Why `michel` ?
+
+. I'm french,
+. *michel* is `miʃɛl`, and *my shell* is `mi ʃɛl`.

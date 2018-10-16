@@ -1,0 +1,5 @@
+Get value in the runtime configuration file (Yaml format)
+
+Arguments:
+    key             The key to read in the runtime configuration file.
+    default_value   (optional) The default value if key not found.

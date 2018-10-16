@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+if [ $# == 0 ]; then
+    exit 3
+fi
+
+key="$1"
+default_value="$2"
+
+value=$(jq -r "$key" "$HOME/.$(cat "$ROOT_DIR"/app/.name)rc.json")
+
+if [ "$value" != "null" ]
+then
+    echo "$value"
+elif [ -n "$default_value" ]
+then
+    echo "$default_value"
+else
+    exit 1
+fi

@@ -9,8 +9,8 @@ and executable to be presented as a sub-command.
 ## Example
 
 ```sh
-bash-cli install my-app
-bash-cli command create start
+cli install my-app
+cli command create start
 my-app start
 ```
 

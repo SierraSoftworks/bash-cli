@@ -35,6 +35,7 @@ if [[ -f "$CMD_DIR/$CMD_NAME" ]]; then
     exit 1
 fi
 
+touch "$CMD_DIR/$CMD_NAME" && chmod +x "$CMD_DIR/$CMD_NAME"
 cat > "$CMD_DIR/$CMD_NAME" <<EOT
 #!/usr/bin/env bash
 echo -e "\033[36mTODO\033[39m: Implement this command"

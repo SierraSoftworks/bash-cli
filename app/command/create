@@ -18,14 +18,16 @@ fi
 CMD_DIR="$APP_DIR"
 
 if [[ $# -gt 1 ]]; then
-    for i in $(($#-1)); do
-        DIR=${!i}
-        CMD_DIR="$CMD_DIR/$DIR"
-        if [[ ! -d "$CMD_DIR" ]]; then
-            mkdir "$CMD_DIR"
-            echo "TODO: Add help for this directory" > "$CMD_DIR/.help"
-        fi
-    done
+  elements=("$@")
+  unset elements[$(($#-1))]
+  for i in ${elements[@]}; do
+    DIR=${i}
+    CMD_DIR="$CMD_DIR/$DIR"
+    if [[ ! -d "$CMD_DIR" ]]; then
+      mkdir "$CMD_DIR"
+      echo "TODO: Add help for this directory" > "$CMD_DIR/.help"
+    fi
+  done
 fi
 
 CMD_NAME="${!#}"

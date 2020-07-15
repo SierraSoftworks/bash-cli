@@ -13,5 +13,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@master
+
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@master
+      with:
+        ignore: app

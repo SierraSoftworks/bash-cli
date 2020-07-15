@@ -1,3 +1,4 @@
+# This action is responsible for running a spellcheck against `main` each time we make changes.
 name: Spellcheck
 
 on:

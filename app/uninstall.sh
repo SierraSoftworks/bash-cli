@@ -4,10 +4,10 @@ if [ $# == 0 ]; then
     exit 3
 fi
 
-APP_DIR=`pwd`
+APP_DIR=$(pwd)
 
 if [[ -f "$APP_DIR/.bash_cli" ]]; then
-    APP_DIR=`dirname "$APP_DIR"`
+    APP_DIR=$(dirname "$APP_DIR")
 fi
 
 if [[ ! -f "$APP_DIR/app/.bash_cli" ]]; then
@@ -24,7 +24,7 @@ if [[ ! -f "$FOLDER/$NAME" ]]; then
     exit 1
 fi
 
-LN_PATH=`perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$FOLDER/$NAME"`
+LN_PATH=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$FOLDER/$NAME")
 
 if [[ "$LN_PATH" != "$APP_DIR/cli" ]]; then
     >&2 echo -e "\033[31mCommand \033[36m$1\033[31m doesn't resolve to this project\033[39m"

@@ -18,9 +18,8 @@ fi
 CMD_DIR="$APP_DIR"
 
 if [[ $# -gt 1 ]]; then
-    for i in $(($#-1)); do
-        DIR=${!i}
-        CMD_DIR="$CMD_DIR/$DIR"
+    for dir in "${@:1:$(($#-1))}"; do
+        CMD_DIR="$CMD_DIR/$dir"
         if [[ ! -d "$CMD_DIR" ]]; then
             mkdir "$CMD_DIR"
             echo "TODO: Add help for this directory" > "$CMD_DIR/.help"

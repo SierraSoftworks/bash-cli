@@ -12,6 +12,10 @@ COLOR_LIGHT_GRAY="\033[37m"
 COLOR_DARK_GRAY="\033[38m"
 COLOR_NORMAL="\033[39m"
 
+function bcli_resolve_path() {
+    perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+}
+
 function bcli_trim_whitespace() {
     # Function courtesy of http://stackoverflow.com/a/3352015
     local var="$*"
@@ -28,7 +32,7 @@ function bcli_show_header() {
 
 function bcli_entrypoint() {
     local root_dir;
-    root_dir=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$0")")
+    root_dir=$(dirname "$(bcli_resolve_path "$0")")
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$0")
@@ -112,7 +116,7 @@ function bcli_entrypoint() {
 
 function bcli_help() {
     local root_dir;
-    root_dir=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$0")")
+    root_dir=$(dirname "$(bcli_resolve_path "$0")")
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$1")
@@ -153,7 +157,7 @@ function bcli_help() {
             cmd=$(basename "$file")
 
             # Don't show hidden files as available commands
-            if [[ "$cmd" != .* && "$cmd" != *.usage && "$cmd" != *.help ]]; then
+            if [[ "$cmd" != .* && "$cmd" != *.* ]]; then
                 echo -en "${COLOR_GREEN}$cli_entrypoint ${COLOR_CYAN}${*:2:$((help_arg_start-1))} $cmd ${COLOR_NORMAL}"
 
                 if [[ -f "$file.usage" ]]; then
@@ -187,7 +191,8 @@ function bcli_help() {
 
 function bcli_bash_completions() {
     local root_dir;
-    root_dir=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$(which "${COMP_WORDS[0]}")")")
+    root_dir=
+    root_dir=$(dirname "$(bcli_resolve_path "$(which "${COMP_WORDS[0]}")")")
 
     local curr_arg;
     curr_arg="${COMP_WORDS[COMP_CWORD]}"

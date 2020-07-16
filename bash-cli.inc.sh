@@ -234,8 +234,8 @@ function bcli_bash_completions() {
         local opts=("help")
         while IFS= read -d $'\0' -r file ; do
             # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
-            opts=("${opts[@]}" $(basename $file))
-        done < <(find $cmd_file/ -maxdepth 1 ! -path "$cmd_file"/ ! -iname '*.*' -print0)
+            opts=("${opts[@]}" $(basename "$file"))
+        done < <(find "$cmd_file"/ -maxdepth 1 ! -path "$cmd_file"/ ! -iname '*.*' -print0)
         
         IFS="
         "

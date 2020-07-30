@@ -38,7 +38,7 @@ cat > "$CMD_DIR/$CMD_NAME" <<EOT
 #!/usr/bin/env bash
 echo -e "\033[36mTODO\033[39m: Implement this command"
 EOT
-# make is executable
+# make executable
 chmod +x "$CMD_DIR/$CMD_NAME"
 
 echo "ARGS..." > "$CMD_DIR/$CMD_NAME.usage"

@@ -1,0 +1,60 @@
+#!/bin/bash
+
+USE_FZF=yup
+
+function _fzf() {
+    if [[ -n $USE_FZF ]]; then
+        exec fzf -0 -1 --no-sort "$@" $filter
+    else
+        cat
+    fi
+}
+
+function _cache() {
+    HASH=$(echo $@ | md5 )
+    CACHE_FILE="/tmp/${HASH}"
+    NOW=$(date +%s)
+    if [[ ! -e $CACHE_FILE ]] ||  [[ $(($(date +%s)-$(date -r $CACHE_FILE +%s))) -ge 3600 ]]; then
+        RESULT=$(eval "$@")
+        echo "$RESULT" > /tmp/$HASH
+        echo "$RESULT"
+    else
+        cat $CACHE_FILE
+    fi
+}
+
+filter=""
+if [[ -n $curr_arg ]]; then
+    filter="-q ^$curr_arg"
+fi
+
+local_args_array=(${COMP_WORDS[@]:${cmd_arg_start}})
+echo ${#local_args_array[@]} ${local_args_array[@]}  >> ~/com.debug.local_args_array
+
+# If we have one argument suggest labels
+if [[ $COMP_CWORD  -eq $cmd_arg_start ]]; then
+    debug_me "Select labels"
+  _cache  'kubectl get pods -o=custom-columns="D:metadata.labels.app\.name" --no-headers | sort | uniq' | _fzf --prompt="Select app.name label:> "
+# If we have two arguments suggest pod
+elif [[ $(($COMP_CWORD-$cmd_arg_start)) -eq 1 ]]; then
+    debug_me "select pods" app.name=${local_args_array[0]}
+    kubectl get pods -l app.name=${local_args_array[0]} -o name  |cut -f2 -d "/" | _fzf --prompt='Choose pod:>'
+else
+# We don't need to suggest more than two arguments
+    echo ""
+fi
+
+
+# # set >> ~/com.debug.local_args_array
+# # env >>
+# #echo -e "arguments\n" ${COMP_WORDS[@]:${cmd_arg_start}}
+# local_args_array=${COMP_WORDS[@]:${cmd_arg_start}}
+#echo $local_args_array >> ~/com.debug.local_args_array
+# # if [[ -n $local_args_array ]];
+# # then
+# #     #echo  $local_args_array
+# #     echo "I'm here here is arguments"
+# # else
+# # echo "--hell"
+# # fi
+

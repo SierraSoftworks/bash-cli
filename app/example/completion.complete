@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# This is a simple example how to add autocompletion to you command.
+OPTIONS=("one" "two" "three")
+echo ${OPTIONS[@]}
+
+
+# You also might need to have access to arguments
+# it could be done via `local_args_array=(${COMP_WORDS[@]:${cmd_arg_start}})`
+# local_args_array will contain list of all argument after your command:
+# for: cli example completion 1 2 3 4
+# local_args_array  will be '1 2 3 4'
+# You also could use fzf in here to make interactive selects.

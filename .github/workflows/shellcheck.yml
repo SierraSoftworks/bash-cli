@@ -21,3 +21,5 @@ jobs:
       uses: ludeeus/action-shellcheck@master
       env:
         SHELLCHECK_OPTS: -e SC2148
+      with:
+        check_together: 'yes'

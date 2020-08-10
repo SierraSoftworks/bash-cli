@@ -36,7 +36,7 @@ function bcli_entrypoint() {
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$0")
-    
+
     # Locate the correct command to execute by looking through the app directory
     # for folders and files which match the arguments provided on the command line.
     local cmd_file;
@@ -120,7 +120,7 @@ function bcli_help() {
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$1")
-    
+
     # If we don't have any additional help arguments, then show the app's
     # header as well.
     if [ $# == 0 ]; then
@@ -142,7 +142,7 @@ function bcli_help() {
     # commands in that directory along with its help content.
     if [[ -d "$help_file" ]]; then
         echo -e "${COLOR_GREEN}$cli_entrypoint ${COLOR_CYAN}${*:2:$((help_arg_start-1))} ${COLOR_NORMAL}"
-        
+
         # If there's a help file available for this directory, then show it.
         if [[ -f "$help_file/.help" ]]; then
             cat "$help_file/.help"
@@ -219,6 +219,13 @@ function bcli_bash_completions() {
         cmd_file=$(dirname "$cmd_file")
     fi
 
+    # If cursor is on the end of command we want to get a name of current file/directory
+    # and don't look inside folder.
+    if [[ $curr_arg = $(basename $cmd_file) ]]; then
+        COMPREPLY=($(basename $cmd_file))
+        return
+    fi
+
     # If we found a command, then suggest the `--help` argument
     # TODO: Add parsing of .usage files for this
     if [[ -f "$cmd_file" ]]; then
@@ -241,7 +248,7 @@ function bcli_bash_completions() {
             # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
             opts=("${opts[@]}" $(basename "$file"))
         done < <(find "$cmd_file"/ -maxdepth 1 ! -path "$cmd_file"/ ! -iname '*.*' -print0)
-        
+
         IFS="
         "
         # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies

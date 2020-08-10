@@ -221,8 +221,9 @@ function bcli_bash_completions() {
 
     # If cursor is on the end of command we want to get a name of current file/directory
     # and don't look inside folder.
-    if [[ $curr_arg = $(basename $cmd_file) ]]; then
-        COMPREPLY=($(basename $cmd_file))
+    if [[ $curr_arg = $(basename "$cmd_file") ]]; then
+        # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
+        COMPREPLY=($(basename "$cmd_file"))
         return
     fi
 

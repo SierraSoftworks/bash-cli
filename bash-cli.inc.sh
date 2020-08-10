@@ -219,6 +219,14 @@ function bcli_bash_completions() {
         cmd_file=$(dirname "$cmd_file")
     fi
 
+    # If cursor is on the end of command we want to get a name of current file/directory
+    # and don't look inside folder.
+    if [[ $curr_arg = $(basename "$cmd_file") ]]; then
+        # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
+        COMPREPLY=($(basename "$cmd_file"))
+        return
+    fi
+
     # If we found a command, then suggest the `--help` argument
     # TODO: Add parsing of .usage files for this
     if [[ -f "$cmd_file" ]]; then

@@ -36,7 +36,7 @@ function bcli_entrypoint() {
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$0")
-    
+
     # Locate the correct command to execute by looking through the app directory
     # for folders and files which match the arguments provided on the command line.
     local cmd_file;
@@ -120,7 +120,7 @@ function bcli_help() {
 
     local cli_entrypoint;
     cli_entrypoint=$(basename "$1")
-    
+
     # If we don't have any additional help arguments, then show the app's
     # header as well.
     if [ $# == 0 ]; then
@@ -142,7 +142,7 @@ function bcli_help() {
     # commands in that directory along with its help content.
     if [[ -d "$help_file" ]]; then
         echo -e "${COLOR_GREEN}$cli_entrypoint ${COLOR_CYAN}${*:2:$((help_arg_start-1))} ${COLOR_NORMAL}"
-        
+
         # If there's a help file available for this directory, then show it.
         if [[ -f "$help_file/.help" ]]; then
             cat "$help_file/.help"
@@ -230,9 +230,17 @@ function bcli_bash_completions() {
                 return
             fi
         done
-
-        # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
-        COMPREPLY=($(compgen -W '--help' -- "$curr_arg"))
+        # Use bash completion file if any.
+        if [ -f "${cmd_file}.complete" ]; then
+            # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
+            # shellcheck disable=SC1090 # Disabling as nature of this file is a really dynamic
+            COMPREPLY=($(compgen -W "--help $(source "${cmd_file}.complete")" -- "$curr_arg" ) )
+            return
+        else
+            # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
+            COMPREPLY=($(compgen -W '--help' -- "$curr_arg"))
+            return
+        fi
     # If we found a directory, then show all the commands which are
     # available within it, as well as the `help` virtual command.
     elif [ -d "$cmd_file" ]; then
@@ -241,7 +249,7 @@ function bcli_bash_completions() {
             # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
             opts=("${opts[@]}" $(basename "$file"))
         done < <(find "$cmd_file"/ -maxdepth 1 ! -path "$cmd_file"/ ! -iname '*.*' -print0)
-        
+
         IFS="
         "
         # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies

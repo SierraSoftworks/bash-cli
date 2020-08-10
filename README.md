@@ -62,6 +62,25 @@ source "/opt/my-app/complete"
 complete -F _bash_cli my-app
 ```
 
+If you want to add completion to your commands just create `[command].complete` file which returns array.
+```sh
+OPTIONS=("one" "two" "three")
+echo ${OPTIONS[@]}
+```
+
+See `example/completion` command as example.
+
+You also might need to have access to arguments it could be done via:
+ `local_args_array=(${COMP_WORDS[@]:${cmd_arg_start}})`
+for: `cli example completion 1 2 3 4`
+`local_args_array`  will be `'1 2 3 4'`
+
+You also could use fzf in here to make interactive selects:
+
+```sh
+ echo -e "one\ntwo\nthree" | fzf
+```
+
 ## Frequently Asked Questions
 
 1. **Can I use Bash CLI to run things which aren't bash scripts?**
@@ -74,4 +93,4 @@ complete -F _bash_cli my-app
 
 1. **Does it allow me to use tab-autocomplete?**
    As of the latest version, yes it does. The install command included in this repo will automatically
-   set up your `/etc/bash_completion.d/` directory to provide support for your project. 
+   set up your `/etc/bash_completion.d/` directory to provide support for your project.

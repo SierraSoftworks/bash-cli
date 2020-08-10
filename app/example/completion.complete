@@ -3,7 +3,6 @@
 OPTIONS=("one" "two" "three")
 echo ${OPTIONS[@]}
 
-
 # You also might need to have access to arguments
 # it could be done via `local_args_array=(${COMP_WORDS[@]:${cmd_arg_start}})`
 # local_args_array will contain list of all argument after your command:

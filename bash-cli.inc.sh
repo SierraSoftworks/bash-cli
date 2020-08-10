@@ -233,7 +233,7 @@ function bcli_bash_completions() {
         # Use bash completion file if any.
         if [ -f "${cmd_file}.complete" ]; then
             # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies
-            COMPREPLY=($(compgen -W "--help $(source ${cmd_file}.complete)" -- "$curr_arg" ) )
+            COMPREPLY=($(compgen -W "--help $(source "${cmd_file}.complete")" -- "$curr_arg" ) )
             return
         else
             # shellcheck disable=SC2207 # Using this as alternatives are not cross-platform or introduce dependencies

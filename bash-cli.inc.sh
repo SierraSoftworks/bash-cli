@@ -88,7 +88,7 @@ function bcli_entrypoint() {
     # the command's help information.
     arg_i=0 # We need the index to be able to strip list indices
     for arg in "${cmd_args[@]}"; do
-        if [[ "${arg}" == "--help" ]]; then
+        if [[ "${arg}" == "--help" && -f "$HELP_FILE.help" ]]; then
             # Strip off the `--help` portion of the command
             unset "cmd_args[$arg_i]"
             cmd_args=("${cmd_args[@]}")

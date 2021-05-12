@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@master
 
     - name: Register ShellCheck problem matchers
-      uses: lumaxis/shellcheck-problem-matchers@v1
+      uses: lumaxis/shellcheck-problem-matchers@v1.1.2
 
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@master

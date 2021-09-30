@@ -22,9 +22,9 @@ FOLDER="${2-"/usr/bin"}"
 if [[ ! -f "$FOLDER/$NAME" ]]; then
     >&2 echo -e "\033[31mCommand \033[36m$1\033[31m did not exist in \033[36m$2\033[39m"
     exit 1
-fi
+f
 
-LN_PATH=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$FOLDER/$NAME")
+LN_PATH=$(realpath "$FOLDER/$NAME")
 
 if [[ "$LN_PATH" != "$APP_DIR/cli" ]]; then
     >&2 echo -e "\033[31mCommand \033[36m$1\033[31m doesn't resolve to this project\033[39m"

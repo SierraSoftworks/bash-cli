@@ -13,7 +13,7 @@ COLOR_DARK_GRAY="\033[38m"
 COLOR_NORMAL="\033[39m"
 
 function bcli_resolve_path() {
-    perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    realpath "$1"
 }
 
 function bcli_trim_whitespace() {

@@ -3,7 +3,7 @@
 
 function _bash_cli() {
     local root_dir;
-    root_dir=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$(which "${COMP_WORDS[0]}")")")
+    root_dir=$(dirname "$(realpath "$(which "${COMP_WORDS[0]}")")")
     
     # shellcheck source=./bash-cli.inc.sh
     . "$root_dir/bash-cli.inc.sh"

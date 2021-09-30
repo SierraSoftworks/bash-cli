@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ROOT_DIR=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$0")")
+ROOT_DIR=$(dirname "$(realpath "$0")")
 
 # shellcheck source=./bash-cli.inc.sh
 . "$ROOT_DIR/bash-cli.inc.sh"

@@ -1,0 +1,33 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  test-linux:
+    name: Test (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      
+      - shell: bash
+        name: Run tests
+        run: |
+          set -e
+          for test in tests/*; do $test; done
+
+      
+  test-macos:
+    name: Test (Mac OS)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      
+      - shell: bash
+        name: Run tests
+        run: |
+          set -e
+          for test in tests/*; do $test; done
+
+      

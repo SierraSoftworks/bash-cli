@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 
-ROOT_DIR=$(dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$0")")
+realpath() {
+    if [ -x "$( which realpath )" ]
+    then
+        # call the realpath utility if installed
+        "$( which realpath )" "$1"
+    else
+        # on MacOS there is no realpath utility on a default installation
+        # -> use fallback to perl
+        perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    fi
+}
+
+ROOT_DIR=$(dirname "$(realpath "$0")")
 
 # shellcheck source=./bash-cli.inc.sh
 . "$ROOT_DIR/bash-cli.inc.sh"

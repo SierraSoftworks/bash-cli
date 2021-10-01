@@ -4,6 +4,18 @@ if [ $# == 0 ]; then
     exit 3
 fi
 
+realpath() {
+    if [ -x "$( which realpath )" ]
+    then
+        # call the realpath utility if installed
+        "$( which realpath )" "$1"
+    else
+        # on MacOS there is no realpath utility on a default installation
+        # -> use fallback to perl
+        perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    fi
+}
+
 APP_DIR=$(pwd)
 
 if [[ -f "$APP_DIR/.bash_cli" ]]; then
@@ -24,7 +36,7 @@ if [[ ! -f "$FOLDER/$NAME" ]]; then
     exit 1
 fi
 
-LN_PATH=$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$FOLDER/$NAME")
+LN_PATH=$(realpath "$FOLDER/$NAME")
 
 if [[ "$LN_PATH" != "$APP_DIR/cli" ]]; then
     >&2 echo -e "\033[31mCommand \033[36m$1\033[31m doesn't resolve to this project\033[39m"

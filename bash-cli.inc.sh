@@ -12,8 +12,17 @@ COLOR_LIGHT_GRAY="\033[37m"
 COLOR_DARK_GRAY="\033[38m"
 COLOR_NORMAL="\033[39m"
 
+
 function bcli_resolve_path() {
-    perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    if [ -x "$( which realpath )" ]
+    then
+        # call the realpath utility if installed
+        "$( which realpath )" "$1"
+    else
+        # on MacOS there is no realpath utility on a default installation
+        # -> use fallback to perl
+        perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    fi
 }
 
 function bcli_trim_whitespace() {

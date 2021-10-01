@@ -4,6 +4,18 @@ if [ $# == 0 ]; then
     exit 3
 fi
 
+realpath() {
+    if [ -x "$( which realpath )" ]
+    then
+        # call the realpath utility if installed
+        "$( which realpath )" "$1"
+    else
+        # on MacOS there is no realpath utility on a default installation
+        # -> use fallback to perl
+        perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    fi
+}
+
 APP_DIR=$(pwd)
 
 if [[ -f "$APP_DIR/.bash_cli" ]]; then

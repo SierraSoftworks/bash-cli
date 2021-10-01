@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 
+# this file is sourced by /etc/bash_completion.d/* and therefore should not shadow
+# any existing commands in the shell -> add bcli_ prefix to realpath-helper function here
+bcli_realpath() {
+    if [ -x "$( which realpath )" ]
+    then
+        # call the realpath utility if installed
+        "$( which realpath )" "$1"
+    else
+        # on MacOS there is no realpath utility on a default installation
+        # -> use fallback to perl
+        perl -e 'use Cwd "abs_path"; print abs_path(shift)' "$1"
+    fi
+}
 
 function _bash_cli() {
     local root_dir;
-    root_dir=$(dirname "$(realpath "$(which "${COMP_WORDS[0]}")")")
+    root_dir=$(dirname "$(bcli_realpath "$(which "${COMP_WORDS[0]}")")")
     
     # shellcheck source=./bash-cli.inc.sh
     . "$root_dir/bash-cli.inc.sh"
